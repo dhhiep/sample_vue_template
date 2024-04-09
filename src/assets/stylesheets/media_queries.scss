@@ -1,0 +1,40 @@
+// Screen width breakpoints
+$xsmall: 400px; // 20 rem - Small devices (portrait phones)
+$small: 576px; // 30 rem - Small devices (portrait tablets and large phones)
+$medium: 768px; // 48 rem - Medium devices (landscape tablets)
+$large: 992px; // 62 rem - Large devices (laptops/desktops)
+$xlarge: 1200px; // 75 rem - Extra large devices (large laptops and desktops
+$xxlarge: 1536px; // 96 rem - Double Extra large devices (large laptops, desktops or Ultrawide screen)
+
+// media queries
+@mixin responsiveFrom($breakpoint) {
+  @if $breakpoint == xsmall {
+    @media only screen and (min-width: $xsmall) {
+      @content;
+    }
+  } @else if $breakpoint == small {
+    @media only screen and (min-width: $small) {
+      @content;
+    }
+  } @else if $breakpoint == medium {
+    @media only screen and (min-width: $medium) {
+      @content;
+    }
+  } @else if $breakpoint == large {
+    @media only screen and (min-width: $large) {
+      @content;
+    }
+  } @else if $breakpoint == xlarge {
+    @media only screen and (min-width: $xlarge) {
+      @content;
+    }
+  } @else if $breakpoint == xxlarge {
+    @media only screen and (min-width: $xxlarge) {
+      @content;
+    }
+  } @else {
+    @media only screen and (min-width: $breakpoint) {
+      @content;
+    }
+  }
+}
