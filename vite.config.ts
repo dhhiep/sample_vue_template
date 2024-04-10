@@ -18,7 +18,9 @@ export default defineConfig({
     svgLoader(),
     // @quasar/plugin-vite options list:
     // https://github.com/quasarframework/quasar/blob/dev/vite-plugin/index.d.ts
-    quasar({}),
+    quasar({
+      sassVariables: 'src/assets/stylesheets/quasar_variables.scss',
+    }),
   ],
   base: '/',
   server: {

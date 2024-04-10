@@ -2,10 +2,7 @@
 export default {
   content: ['./index.html', './src/**/*.{html,js,jsx,tsx,vue}', './node_modules/flowbite/**/*.js'],
   theme: {
-    fontFamily: {
-      inter: 'Inter, sans-serif',
-      lexend: 'Lexend, sans-serif',
-    },
+    fontFamily: {},
     extend: {
       maxWidth: { app: '1080px' },
     },

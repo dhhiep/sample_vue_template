@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.16.11",
+    "@quasar/quasar-ui-qcalendar": "^4.0.0-beta.16",
     "@yeger/vue-masonry-wall": "^5.0.2",
     "axios": "^1.5.0",
     "core-js": "^3.6.5",
@@ -29,6 +30,7 @@
     "vue": "^3.3.4",
     "vue-i18n": "9",
     "vue-router": "^4.2.4",
+    "vuedraggable": "^2.24.3",
     "yup": "^0.32.11"
   },
   "devDependencies": {
@@ -56,6 +58,7 @@
     "postcss": "^8.4.29",
     "prettier": "^3.0.3",
     "prettier-plugin-tailwindcss": "^0.5.4",
+    "quasar-app-extension-qhierarchy": "^1.0.9",
     "sass": "^1.66.1",
     "tailwindcss": "^3.3.3",
     "typescript": "^5.0.2",
