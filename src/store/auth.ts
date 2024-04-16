@@ -7,7 +7,7 @@ import * as AuthService from '@/services/auth';
 export const useAuthStore = defineStore({
   id: 'auth',
   state: () => ({
-    isLocalUserRestored: false as Boolean,
+    isLocalUserRestored: false as boolean,
     currentUser: undefined as IUserToken | undefined,
   }),
   getters: {

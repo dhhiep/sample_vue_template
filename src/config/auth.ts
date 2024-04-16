@@ -1,1 +1,1 @@
-export const listRoutes = ['Login'];
+export const shouldNotSignedInRoutes = ['Login'];

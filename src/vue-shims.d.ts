@@ -7,6 +7,6 @@ declare module '*.vue' {
 
 declare module 'vue-router' {
   interface RouteMeta {
-    layout: String;
+    layout: string;
   }
 }

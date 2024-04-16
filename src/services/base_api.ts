@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import Serializer, { DeserializerOptions } from 'jsonapi-serializer';
-import NProgress from 'nprogress';
 import qs from 'qs';
+import { LoadingBar } from 'quasar';
 import { useAuthStore } from '@/store/auth';
 import { isBlank } from '@/utils/lang.ts';
 import { snakeToCamelCase } from '@/utils/object';
@@ -9,17 +9,17 @@ import { snakeToCamelCase } from '@/utils/object';
 const Deserializer = Serializer.Deserializer;
 
 axios.interceptors.request.use((config): InternalAxiosRequestConfig<any> => {
-  NProgress.start();
+  LoadingBar.start();
   return config;
 });
 
 axios.interceptors.response.use(
   (response: AxiosResponse) => {
-    NProgress.done();
+    LoadingBar.stop();
     return response;
   },
   (error: AxiosError) => {
-    NProgress.done();
+    LoadingBar.stop();
     return Promise.reject(error);
   }
 );
@@ -97,7 +97,7 @@ const attachBearToken = (headers: any): any => {
 
   return {
     ...headers,
-    'Api-Token': userToken,
+    'X-User-Token': userToken,
   };
 };
 
@@ -108,7 +108,7 @@ const defaultAxiosDefaultSetting = (
   headers: any = {},
   responseType: any = null
 ): AxiosRequestConfig => {
-  let axiosSetting: AxiosRequestConfig = {
+  const axiosSetting: AxiosRequestConfig = {
     method: method,
     url: import.meta.env.VITE_APP_BACKEND_END_POINT + path,
     withCredentials: false,

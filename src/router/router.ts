@@ -5,20 +5,32 @@ import {
   RouteLocationNormalized,
   RouteRecordRaw,
 } from 'vue-router';
-import { listRoutes } from '@/config/auth';
+import { shouldNotSignedInRoutes } from '@/config/auth';
 import { useAppStore } from '@/store/app';
 import { useAuthStore } from '@/store/auth';
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    name: 'Home',
-    component: () => import('@/views/home/Home.vue'),
+    component: () => import('@/views/layouts/Main.vue'),
+    children: [
+      {
+        path: '/',
+        name: 'Home',
+        component: () => import('@/views/home/Home.vue'),
+      },
+    ],
   },
   {
-    path: '/login',
-    name: 'Login',
-    component: () => import('@/views/login/Login.vue'),
+    path: '/',
+    component: () => import('@/views/layouts/Blank.vue'),
+    children: [
+      {
+        path: '/login',
+        name: 'Login',
+        component: () => import('@/views/login/Login.vue'),
+      },
+    ],
   },
   {
     path: '/:catchAll(.*)',
@@ -39,9 +51,7 @@ router.beforeEach((to, from, next) => {
     appStore.setFirstRun(false);
     restoreLocalUser(to, from, next);
   } else {
-    if (!listRoutes.includes(to.name as string) && !authStore.isSignedIn) {
-      next({ name: 'Login' });
-    } else if (listRoutes.includes(to.name as string) && authStore.isSignedIn) {
+    if (shouldNotSignedInRoutes.includes(to.name as string) && authStore.isSignedIn) {
       next({ name: 'Home' });
     } else {
       next();
@@ -59,14 +69,16 @@ const restoreLocalUser = (
     .restoreLocalUser()
     .then(() => {
       authStore.verifyUserToken().then(() => {
-        if (!listRoutes.includes(to.name as string) && !authStore.isSignedIn) {
+        if (!shouldNotSignedInRoutes.includes(to.name as string) && !authStore.isSignedIn) {
           next({ name: 'Login' });
+        } else {
+          next({ name: 'Home' });
         }
       });
     })
     .catch(() => {
       setTimeout(() => {
-        if (!listRoutes.includes(router.currentRoute.value.name as string)) {
+        if (!shouldNotSignedInRoutes.includes(router.currentRoute.value.name as string)) {
           next({ name: 'Login' });
         }
       }, 100);

@@ -30,6 +30,7 @@ module.exports = {
     '^vite$',
     '^vue(.*)$',
     '<THIRD_PARTY_MODULES>',
+    '@/boot/(.*)$',
     '@/(locales/i18n|router/router|store)$', // For main.ts
     '@/config/(.*)$',
     '@/types/(.*)$',

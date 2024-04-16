@@ -14,7 +14,7 @@ module.exports = {
     'plugin:vue/vue3-recommended',
     '@vue/eslint-config-typescript',
     '@vue/prettier',
-    '@vue/prettier/@typescript-eslint',
+    '@vue/eslint-config-prettier',
     '@vue/typescript/recommended',
   ],
   plugins: ['vue', '@typescript-eslint'],
@@ -22,6 +22,8 @@ module.exports = {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-unused-vars': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+    'vue/multi-word-component-names': 'off',
   },
   ignorePatterns: ['node_modules/*', 'dist/*', 'public/*'],
 };

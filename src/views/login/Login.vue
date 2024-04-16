@@ -2,7 +2,7 @@
   <q-layout>
     <q-page-container>
       <q-page class="flex bg-image flex-center">
-        <q-card v-bind:style="$q.screen.lt.sm ? { width: '80%' } : { width: '30%' }">
+        <q-card class="w-[80%] lg:w-[30%]">
           <q-card-section>
             <q-avatar size="103px" class="absolute-center shadow-10">
               <img src="@/assets/images/login/profile.svg?url" />
@@ -10,19 +10,27 @@
           </q-card-section>
           <q-card-section>
             <div class="text-center q-pt-lg">
-              <div class="col text-h6 ellipsis">Log in</div>
+              <div class="col text-h6 ellipsis">{{ t('login.title') }}</div>
             </div>
           </q-card-section>
           <q-card-section>
-            <q-form class="q-gutter-md">
-              <q-input filled v-model="username" label="Username" lazy-rules />
-
-              <q-input type="password" filled v-model="password" label="Password" lazy-rules />
-
-              <div>
-                <q-btn label="Login" to="/" type="button" color="primary" />
+            <VeeForm
+              v-slot="{ meta, isSubmitting }"
+              :validation-schema="validationSchema"
+              class="q-gutter-md"
+              @submit="handleSubmit">
+              <BaseInput name="email" filled :label="t('login.email')" />
+              <BaseInput name="password" filled type="password" :label="t('login.password')" />
+              <div class="flex justify-start">
+                <BaseButton
+                  :disabled="!meta.valid || isSubmitting"
+                  :loading="isSubmitting"
+                  :label="t('login.btnLogin')"
+                  type="submit"
+                  color="dark"
+                  size="md" />
               </div>
-            </q-form>
+            </VeeForm>
           </q-card-section>
         </q-card>
       </q-page>
@@ -31,13 +39,52 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
+import * as yup from 'yup';
+import { Loading, Notify } from 'quasar';
+import { useAuthStore } from '@/store/auth';
+import { regExpNonUTF8Email, regExpStrongEmail } from '@/utils/regex';
 
-const username = ref('');
-const password = ref('');
+const { t } = useI18n({ useScope: 'global' });
+const authStore = useAuthStore();
+const router = useRouter();
+
+const validationSchema = yup.object({
+  email: yup
+    .string()
+    .required(t('validation.required'))
+    .matches(regExpStrongEmail(), t('validation.email'))
+    .matches(regExpNonUTF8Email(), t('validation.email')),
+  password: yup
+    .string()
+    .required(t('validation.required'))
+    .min(6, t('validation.min', { length: 6 }))
+    .max(20, t('validation.max', { length: 20 })),
+});
+
+const handleSubmit = (values: any) => {
+  Loading.show();
+  const formData = {
+    email: values.email,
+    password: values.password,
+  };
+
+  authStore
+    .login(formData)
+    .then(() => {
+      router.push({ name: 'Home' });
+    })
+    .catch(() => {
+      Notify.create(t('validation.general'));
+    })
+    .finally(() => {
+      Loading.hide();
+    });
+};
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .bg-image {
   background-image: linear-gradient(135deg, #7028e4 0%, #e5b2ca 100%);
 }

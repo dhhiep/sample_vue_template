@@ -1,29 +1,29 @@
 import { createApp } from 'vue';
-// Import icon libraries
+// Import libraries
+import '@quasar/extras/fontawesome-v6/fontawesome-v6.css';
 import '@quasar/extras/material-icons/material-icons.css';
-import '@quasar/extras/roboto-font/roboto-font.css';
-import NProgress from 'nprogress';
-import 'nprogress/nprogress.css';
-import { Quasar } from 'quasar';
 import 'quasar/src/css/index.sass';
+// Initializers
+import registerGlobalComponents from '@/boot/global_components';
+import registerMixins from '@/boot/mixin';
+import registerQuasar from '@/boot/quasar';
+// App configurations
 import i18n from '@/locales/i18n';
 import router from '@/router/router';
 import pinia from '@/store';
-// Mixins
-import object from '@/mixins/object';
 // Style Sheets
-import '@/assets/font-icons/css/fontello.css';
 import '@/assets/stylesheets/animate.css';
 import '@/assets/stylesheets/app.scss';
 import '@/assets/stylesheets/style.css';
 // Components
 import App from '@/App.vue';
 
-NProgress.configure({ showSpinner: false });
+const app = createApp(App);
 
-const app = createApp(App).use(router).use(pinia).use(i18n).use(Quasar, {
-  plugins: {}, // import Quasar plugins and add here
-});
+// Register initializers
+registerGlobalComponents(app);
+registerMixins(app);
+registerQuasar(app);
 
+app.use(router).use(pinia).use(i18n);
 app.mount('#app');
-app.mixin(object);
